@@ -162,6 +162,7 @@ pub enum Type<'a> {
     Word,
     Long,
     Single,
+    Zero,
     Double,
 
     // Extended types
@@ -196,7 +197,7 @@ impl<'a> Type<'a> {
         match self {
             Self::Byte => 1,
             Self::Halfword => 2,
-            Self::Word | Self::Single => 4,
+            Self::Word | Self::Single | Self::Zero => 4,
             Self::Long | Self::Double => 8,
             Self::Aggregate(td) => {
                 // TODO: correct for alignment
@@ -219,6 +220,7 @@ impl<'a> fmt::Display for Type<'a> {
             Self::Long => write!(f, "l"),
             Self::Single => write!(f, "s"),
             Self::Double => write!(f, "d"),
+            Self::Zero => write!(f, "z"),
             Self::Aggregate(td) => write!(f, ":{}", td.name),
         }
     }
