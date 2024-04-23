@@ -70,6 +70,7 @@ pub enum Instr<'a> {
     /// Loads a value from memory pointed to by source
     /// `(type, source)`
     Load(Type<'a>, Value),
+    Loads(Type<'a>, Value),
     /// Extend precision of a temporary or convert a floating point into an integer
     Exts(Type<'a>, Value),
     /// `(source, destination, n)`
@@ -151,6 +152,13 @@ impl<'a> fmt::Display for Instr<'a> {
                 }
 
                 write!(f, "load{} {}", ty, src)
+            }
+            Self::Loads(ty, src) => {
+                if matches!(ty, Type::Aggregate(_)) {
+                    unimplemented!("Load aggregate type");
+                }
+
+                write!(f, "loads{} {}", ty, src)
             }
             Self::Exts(ty, src) => {
                 if matches!(ty, Type::Aggregate(_)) {
