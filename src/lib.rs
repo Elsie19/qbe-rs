@@ -42,6 +42,8 @@ pub enum Instr<'a> {
     Div(Value, Value),
     /// Returns a remainder from division
     Rem(Value, Value),
+    /// Returns a remainder from division
+    Urem(Value, Value),
     /// Performs a comparion between values
     Cmp(Type<'a>, Cmp, Value, Value),
     /// Performs a bitwise AND on values
@@ -92,6 +94,7 @@ impl<'a> fmt::Display for Instr<'a> {
             Self::Mul(lhs, rhs) => write!(f, "mul {}, {}", lhs, rhs),
             Self::Div(lhs, rhs) => write!(f, "div {}, {}", lhs, rhs),
             Self::Rem(lhs, rhs) => write!(f, "rem {}, {}", lhs, rhs),
+            Self::Urem(lhs, rhs) => write!(f, "urem {}, {}", lhs, rhs),
             Self::Cmp(ty, cmp, lhs, rhs) => {
                 assert!(
                     !matches!(ty, Type::Aggregate(_)),
