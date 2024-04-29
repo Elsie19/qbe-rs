@@ -84,6 +84,11 @@ pub enum Instr<'a> {
     /// ## Minimum supported QBE version
     /// `1.1`
     Blit(Value, Value, u64),
+
+    /// Debug file
+    DbgFile(String),
+    /// Debug line
+    DbgLoc(u64, Option<u64>),
 }
 
 impl<'a> fmt::Display for Instr<'a> {
@@ -123,6 +128,11 @@ impl<'a> fmt::Display for Instr<'a> {
             Self::Ret(val) => match val {
                 Some(val) => write!(f, "ret {}", val),
                 None => write!(f, "ret"),
+            },
+            Self::DbgFile(val) => write!(f, r#"dbgfile "{}""#, val),
+            Self::DbgLoc(lineno, column) => match column {
+                Some(val) => write!(f, "dbgloc {}, {}", lineno, val),
+                None => write!(f, "dbgloc {}", lineno),
             },
             Self::Jnz(val, if_nonzero, if_zero) => {
                 write!(f, "jnz {}, @{}, @{}", val, if_nonzero, if_zero)
